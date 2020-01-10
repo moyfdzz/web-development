@@ -1,0 +1,43 @@
+@media (max-width: 520px) {
+    p {
+        color:blue;
+    }
+}
+
+@media (min-width: 521px) and (max-width: 900px) {
+    p {
+        color: red;
+    }
+}
+
+@media (min-width: 901px) {
+    p {
+        color: green;
+    }
+}
+
+.contenedor {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    height: 400px;
+    align-items: center;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.hija1 {
+    margin: 0;
+    width: 20%;
+    padding: 20px;
+    border: 1px solid black;
+}
+
+.hija2 {
+    margin: 0;
+    width: 80%;
+    padding: 30px;
+    border: 1px solid black;
+}

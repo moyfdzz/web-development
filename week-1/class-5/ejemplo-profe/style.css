@@ -1,0 +1,46 @@
+div {
+    box-sizing: border-box;
+    border: 1px solid black;
+    text-align: center;
+    width: 100%;
+    padding: 10px;
+}
+
+@media (min-width: 521px) and (max-width: 900px) {
+    .mainContainer {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .leftSide {
+        width: 30%;
+    }
+
+    .rightTop, .rightBottom {
+        display: flex;
+    }
+}
+
+@media (min-width: 901px) {
+    .mainContainer {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .leftItem1, .leftItem2, .leftItem3 {
+        width: 10%;
+    }
+
+    .leftItem3 {
+        margin-left: auto;
+    }
+
+    .leftSide, .rightSide {
+        display: flex;
+    }
+
+    .rightTop, .rightBottom {
+        padding-left: 100px;
+        padding-right: 100px;
+    }
+}
