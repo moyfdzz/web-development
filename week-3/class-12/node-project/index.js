@@ -45,11 +45,11 @@ app.get('/api/getById', (req, res) => {
     });
 
     if (result) {
-        res.status(200).json(result);
+        return res.status(200).json(result);
     }
     else {
         res.statusMessage = "El alumno no se encuentra en la lista.";
-        res.status(404).send();
+        return res.status(404).send();
     }
 });
 
@@ -65,11 +65,11 @@ app.get('/api/getByName/:name', (req, res) => {
     });
 
     if (result.length > 0) {
-        res.status(200).json(result);
+        return res.status(200).json(result);
     }
     else {
         res.statusMessage = "El alumno no se encuentra en la lista.";
-        res.status(404).send();
+        return res.status(404).send();
     }
 });
 
