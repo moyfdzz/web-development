@@ -1,6 +1,7 @@
 let express = require('express');
 let morgan = require('morgan');
 let bodyParser = require('body-parser');
+let mongoose = require('mongoose');
 let jsonParser = bodyParser.json();
 let {StudentList} = require('./model');
 
@@ -8,6 +9,18 @@ let app = express();
 
 app.use(express.static('public'));
 app.use(morgan('dev'));
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
+    res.header("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
+    
+    if (req.method === "OPTIONS") {
+        return res.send(204);
+    }
+    
+    next();
+});
 
 let estudiantes = [{
     nombre : "Miguel",
@@ -80,10 +93,18 @@ app.get('/api/getByName/:name', (req, res) => {
 
 // http://localhost:8080/api/getByName/Victor
 
-// app.get('/api/students', (req, res) => {
-//     console.log(req);
-//     res.status(200).json(estudiantes);
-// });
+app.get('/api/students', (req, res) => {
+    StudentList.getAll()
+        .then(studentList => {
+            return res.status(200).json(studentList);
+        })
+        .catch(error => {
+            res.statusMessage = "Hubo un error de conexión con la BD.";
+            return res.status(500).send();
+        });
+
+    res.status(200).json(estudiantes);
+});
 
 app.post('/api/newStudent', jsonParser, (req, res) => {
     let nombre = req.body.nombre;
@@ -124,6 +145,43 @@ app.put('/api/updateStudent/:id', jsonParser, (req, res) => {
     }
 });
 
-app.listen(8080, () => {
-    console.log("Servidor corriendo en puerto 8080.");
-});
+function runServer(port, databaseUrl){
+    return new Promise( (resolve, reject ) => {
+        mongoose.connect(databaseUrl, response => {
+            if ( response ){
+                return reject(response);
+            }
+            else{
+                server = app.listen(port, () => {
+                    console.log( "App is running on port " + port );
+                    resolve();
+                })
+                .on( 'error', err => {
+                    mongoose.disconnect();
+                    return reject(err);
+                })
+            }
+        });
+    });
+}
+   
+function closeServer(){
+    return mongoose.disconnect()
+        .then(() => {
+            return new Promise((resolve, reject) => {
+                console.log('Closing the server');
+                server.close( err => {
+                    if (err){
+                        return reject(err);
+                    }
+                    else{
+                        resolve();
+                    }
+                });
+            });
+        });
+}
+
+runServer(8080, "mongodb://localhost/university/");
+
+module.exports = {app, runServer, closeServer};

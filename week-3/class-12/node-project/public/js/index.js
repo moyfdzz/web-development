@@ -1,29 +1,32 @@
 function loadStudents() {
     let url = "/api/students";
     let settings = {
-        method : "GET"
-    }
+        method: "GET",
+        'Content-Type': "application/json"
+    };
+
     fetch(url, settings)
-        .then (response => {
+        .then(response => {
             if (response.ok) {
                 return response.json();
             }
         })
-        .then (repsonseJSON => {
-            displayResults(repsonseJSON);
+        .then(responseJSON => {
+            console.log(responseJSON);
+            displayResults(responseJSON);
         });
 }
 
-function displayResults(repsonseJSON) {
+function displayResults(responseJSON) {
+    students = responseJSON;
+
     $('#studentList').empty();
 
-    for(let i = 0; i < repsonseJSON.length; i++) {
+    students.forEach(student => {
         $('#studentList').append(`
-            <li>
-                ${repsonseJSON[i].nombre} ${repsonseJSON[i].apellido}
-            </li>
-                `);
-    }
+            <li>${student.nombre} ${student.apellido} </li>
+        `);
+    });
 }
 
 function init() {
