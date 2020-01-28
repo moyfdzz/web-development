@@ -33,3 +33,8 @@
 * Capchas
 * IP DNS bloqueas una entrada
 * Doble autentificación
+## Encriptación
+### Simétrica
+* Es cuando el emisor y el receptor, las dos partes que se comunican, tienen una llave pública para cifrar y descifrar los mensajes que se envían.
+### Asimétrica
+* Es cuando el emisor usa la llave pública del receptor para que sólo ese receptor pueda descifrar el mensaje con su llave privada.
